@@ -1,0 +1,15 @@
+{
+  "name": "vue-filter-bar",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://git.oschina.net/keife08/vue-filter-bar.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "keifc",
+  "license": "ISC"
+}
