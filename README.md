@@ -3,7 +3,7 @@
 
 ### 源码展示
 
-- template
+> template
 
       <template>
         <div id="app">
@@ -13,7 +13,7 @@
         </div>
       </template>
 
-- script
+> script
 
       export default {
           data(){
