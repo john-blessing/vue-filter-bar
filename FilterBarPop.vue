@@ -44,6 +44,8 @@
         items: [],
         column: '',
         visible: false,
+        randomNum: 0,
+        dataInfo: [],
         top: 0,
         bgTop: 0
       }
@@ -140,7 +142,7 @@
   .fade-leave-active {
     opacity: 0
   }
-
+  
   .filterbarpop-wrap {
     position: fixed;
     width: 100%;
@@ -184,6 +186,10 @@
           text-decoration: none;
           color: #323232;
           text-align: center;
+          span{
+            margin-right: 5px;
+            display: inline-block;
+          }
         }
       }
       .main {
@@ -193,7 +199,7 @@
         -webkit-flex-direction: row;
         height: 250px;
         background: #fff;
-
+        border-top: 1px solid #f5f5f5;
         .main-sidebar {
           flex: 0 0 50%;
           overflow: auto;
@@ -206,7 +212,15 @@
           flex: 0 0 100%;
           div {
             text-align: left;
-            text-indent: 1.5em;
+            padding-left: 1.5em;
+          }
+          .item{
+            span{
+              position: relative;
+              top: 0;
+              left: 0;
+              margin-right: 15px;
+            }
           }
         }
         .main-list {
@@ -225,8 +239,15 @@
           text-decoration: none;
           color: #444;
           text-align: center;
+          position: relative;
           &:active {
             color: #fff;
+          }
+          span{
+            margin-right: 5px;
+            position: absolute;
+            left: 15px;
+            top: 12px;
           }
         }
       }

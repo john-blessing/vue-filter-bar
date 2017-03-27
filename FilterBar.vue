@@ -97,6 +97,11 @@
     .is-selected {
       color: orange;
     }
+    .col{
+      span{
+        margin-right: 5px;
+      }
+    }
   }
 
 </style>
