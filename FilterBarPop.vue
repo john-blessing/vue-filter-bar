@@ -150,6 +150,7 @@
     bottom: 0;
     left: 0;
     overflow: hidden;
+    z-index: 2017;
     max-height: 100%;
     .filterbarpop-bg {
       position: fixed;

@@ -5,13 +5,10 @@
 
 > template
 
-      <template>
-        <div id="app">
-          <filter-bar :top-menus="topMenus" @selecteditem="handleClick" @selectedsidemenu="handleSelectedSidemenu" @selectednav="handleSelectedNav"
-            @selecteddialogmenu="handleSelectedDialogMenu"></filter-bar>
-          <p v-for="product in productList">{{product}}</p>
-        </div>
-      </template>
+      <filter-bar :top-menus="topMenus" @selecteditem="handleClick" @selectedsidemenu="handleSelectedSidemenu" @selectednav="handleSelectedNav"
+      @selecteddialogmenu="handleSelectedDialogMenu">
+        <p v-for="product in productList">{{product}}</p>
+      </filter-bar>
 
 > script
 
@@ -19,6 +16,7 @@
           data(){
             return {
               ...
+              productList: [...],
               topMenus: [
                     {
                     name: '全部商品',

@@ -1,12 +1,15 @@
 <template>
   <div class="filterbar">
-    <div class="container">
+    <div class="container" id="container">
       <div class="row">
         <div class="col" :class="{'is-selected': index == selectedIndex}" @click="handleShowDialog(topMenu, index)" v-for="(topMenu, index) in topMenus">
           <span :class="topMenu.icon"></span>{{topMenu.name}}</div>
         <filter-bar-pop :show-dialog="isShow" :isNav="isNav" :navs="navs" @close="handleClose" @clickitem="handleQuery" @checkmenu="handleCheckMenu"
           @clicksidebar="handleClickSideBar"></filter-bar-pop>
       </div>
+    </div>
+    <div class="list" id="list">
+      <slot></slot>
     </div>
   </div>
 </template>
@@ -26,6 +29,9 @@
         navs: [],
         selectedIndex: undefined
       }
+    },
+    mounted(){
+      document.getElementById('list').style.top = document.getElementById('container').offsetHeight + document.getElementById('container').offsetTop + 'px';
     },
     methods: {
       handleShowDialog(v, i) {
@@ -70,6 +76,14 @@
     left: 0;
     width: 100%;
     background: #fff;
+      .list{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        max-height: 100vh;
+        overflow: auto;
+      }
   }
 
   .container {
