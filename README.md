@@ -95,4 +95,7 @@
 
 ### demo
 
-浏览器打开examples里面的index.html
+cd到demo目录 
+
+1. 运行 npm install 
+2. 启动 npm run dev
