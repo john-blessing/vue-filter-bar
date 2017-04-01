@@ -1,3 +1,3 @@
-import FilterBar from './demo/src/component/FilterBar.vue'
+import FilterBar from './demo/src/components/FilterBar.vue'
 
 export default FilterBar
