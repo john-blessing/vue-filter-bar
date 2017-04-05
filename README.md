@@ -8,7 +8,7 @@ vue编写的移动端帅选条。
 
 ## Use Setup
 
-***
+* * *
 
 #### Install vue-filter-bar
 
@@ -104,7 +104,7 @@ vue编写的移动端帅选条。
 ### Detail Params
 
   * list(Array, default: []): 二级目录列表右侧
-  
+
 ## API
 
    * bar-menus(Array, default: []): 按钮相关数据的入口。
