@@ -5,6 +5,9 @@ vue编写的移动端帅选条。
 ## Example
 
 ![Alt text](/demo/static/filterbar.jpeg)
+![Alt text](/demo/static/filterbar1.jpeg)
+![Alt text](/demo/static/filterbar2.jpeg)
+![Alt text](/demo/static/filterba3.jpeg)
 
 ## Use Setup
 
@@ -93,7 +96,7 @@ vue编写的移动端帅选条。
 ### Detail Params
 
    * icon(String, default: ''): 按钮icon
-   * name(String, default: ''): 按钮名称
+   * name(String, default: ''): 列表项名称
    * selectIndex(Number, default: 0): index
    * detailList(Array, default:[]): 二级目录列表左侧
 
@@ -102,7 +105,7 @@ vue编写的移动端帅选条。
 ### Detail Params
 
   * list(Array, default: []): 二级目录列表右侧
-
+  * name(String, default: ''): 列表项名称
 ## API
 
    * bar-menus(Array, default: []): 按钮相关数据的入口。
