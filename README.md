@@ -1,101 +1,117 @@
-## FilterBar组件使用
+## vue-filter-bar
 
+vue编写的移动端帅选条。
 
-### 源码展示
+## Example
 
-> template
+![Alt text](/demo/static/filterbar.jpeg)
 
-      <filter-bar :top-menus="topMenus" @selecteditem="handleClick" @selectedsidemenu="handleSelectedSidemenu" @selectednav="handleSelectedNav"
-      @selecteddialogmenu="handleSelectedDialogMenu">
-        <p v-for="product in productList">{{product}}</p>
-      </filter-bar>
+## Use Setup
 
-> script
+***
 
+#### Install vue-filter-bar
+
+    npm i vue-filter-bar --save
+
+### Vue mount
+
+    // import
+    import FilterBar from 'vue-filter-bar'
+
+    export default {
+      components: {
+        FilterBar
+      }
+    }
+
+## Use in SPA
+
+    <template>
+      <div id="app">
+        <filter-bar 
+          top="40" 
+          :bar-menus="barMenus" 
+          @showDialog="handleShowDialog" @closeDialog="handleCloseDialog" 
+          @changeTab="handleChangeTab"
+          @changeMainItem="handleChangeMainItem" @changeSelect="changeData">
+        </filter-bar>
+      </div>
+    </template>
+
+    <script>
+      import FilterBar from '@/components/FilterBar'
+      import barMenus from '@/data';
       export default {
-          data(){
+          name: 'app',
+          data() {
             return {
-              ...
-              productList: [...],
-              topMenus: [
-                    {
-                    name: '全部商品',
-                    icon: '',
-                    navs: [{
-                    name: '',
-                    icon: '',
-                    header: true,
-                    dataList: [{
-                      name: '附近',
-                      list: [{...}]
-                    }]
-                    }]
-                  }
-              ]
+              barMenus: barMenus
             }
           },
-          ....
           methods: {
-            handleClick(v) {
+            handleShowDialog(v) {
               // console.log(v);
             },
-            handleSelectedSidemenu(v) {
+            handleCloseDialog(v) {
               // console.log(v);
             },
-            handleSelectedNav(v) {
+            handleChangeTab(v) {
               // console.log(v);
             },
-            handleSelectedDialogMenu(v) {
+            handleChangeMainItem(v) {
               // console.log(v)
+            },
+            changeData(v) {
+              console.log(v);
             }
+          },
+          components: {
+            'filter-bar': FilterBar
           }
-      }
+        }
+      </script>
 
-> topMenus
 
-    {
-      name: '全部商品',
-      icon: '',
-      navs: [{
-      name: '',
-      icon: '',
-      header: true,
-      dataList: [{
-        name: '附近',
-        list: [{...}]
-      }]
-      }]
-    }  
+## Data Structure
 
-    --navs 弹框顶部按钮；
-    --dataList 弹框顶部按钮所对应的列表数据；
-      --list name所对应的列表数据
+![Alt text](/demo/static/data1.jpeg)
 
-### 对象
+### Detail Params
 
-- topMenus: 帅选条件按钮 (Array)
+   * name(String, default: ''): 按钮名称
+   * icon(String, default: ''): 按钮icon (弃用)
+   * value(String, default: ''): 按钮的值
+   * type(String, default: ''): 区分帅选按钮
+   * showTabHeader(Boolean, default: true): 显示弹框一级目录
+   * defaultIcon(String, default: ''): 按钮默认icon
+   * selectIcon(String, default: ''): 按钮被选中icon
+   * selectIndex(Number, default: 0): index
 
-### 属性
 
-- icon: 字体图标类 (String)
+![Alt text](/demo/static/data2.jpeg)
 
-- header: 是否显示弹框选项头部导航 (默认: true)
 
-### 事件
+### Detail Params
 
-- selecteddialogmenu: 点击FilterBar顶部按钮时触发
+   * icon(String, default: ''): 按钮icon
+   * name(String, default: ''): 按钮名称
+   * selectIndex(Number, default: 0): index
+   * detailList(Array, default:[]): 二级目录列表左侧
 
-- selecteditem: 点击弹框列表右侧项时触发
+![Alt text](/demo/static/data3.jpeg)
 
-- selectedsidemenu: 点击弹框列表左侧项时触发, （注：只有一列列表时出发）
+### Detail Params
 
-- selectednav: 点击弹框顶部导航按钮时触发
+  * list(Array, default: []): 二级目录列表右侧
+  
+## API
 
----
+   * bar-menus(Array, default: []): 按钮相关数据的入口。
+   * showDialog(Function): 显示按钮相对应的弹框时调用。
+   * closeDialog(Function): 弹框消失时调用。
+   * changeTab(Function): 切换弹框一级目录时调用。
+   * changeMainItem(Function): 选择二级目录左侧列表时调用。
+   * changeSelect(Function): 选择二级目录右侧列表时调用。
 
-### demo
-
-cd到demo目录 
-
-1. 运行 npm install 
-2. 启动 npm run dev
+## Issues
