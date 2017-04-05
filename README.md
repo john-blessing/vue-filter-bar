@@ -109,10 +109,10 @@ vue编写的移动端帅选条。
 ## API
 
    * bar-menus(Array, default: []): 按钮相关数据的入口。
-   * showDialog(Function): 显示按钮相对应的弹框时调用。
-   * closeDialog(Function): 弹框消失时调用。
-   * changeTab(Function): 切换弹框一级目录时调用。
-   * changeMainItem(Function): 选择二级目录左侧列表时调用。
-   * changeSelect(Function): 选择二级目录右侧列表时调用。
+   * showDialog(Function, return: Object): 显示按钮相对应的弹框时调用。
+   * closeDialog(Function, return: Object): 弹框消失时调用。
+   * changeTab(Function, return: Object): 切换弹框一级目录时调用。
+   * changeMainItem(Function, return: Object): 选择二级目录左侧列表时调用。
+   * changeSelect(Function, return: Array): 返回最终结果
 
 ## Issues
