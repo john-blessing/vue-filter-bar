@@ -1,15 +1,13 @@
 <template>
-  <div class="filterbar">
-    <div class="container" id="container">
+  <div class="filterbar" :style="{'top': top + 'px'}">
+    <div class="container">
       <div class="row">
-        <div class="col" :class="{'is-selected': index == selectedIndex}" @click="handleShowDialog(topMenu, index)" v-for="(topMenu, index) in topMenus">
-          <span :class="topMenu.icon"></span>{{topMenu.name}}</div>
-        <filter-bar-pop :show-dialog="isShow" :isNav="isNav" :navs="navs" @close="handleClose" @clickitem="handleQuery" @checkmenu="handleCheckMenu"
-          @clicksidebar="handleClickSideBar"></filter-bar-pop>
+        <div class="col" :class="{'selected': index == selectedIndexMenu}" @click="handleShowDialog(barMenu, index)" v-for="(barMenu, index) in barMenus">
+          {{barMenu.name}}<span :class="index == selectedIndexMenu ? barMenu.selectIcon : barMenu.defaultIcon"></span>
+        </div>
       </div>
-    </div>
-    <div class="list" id="list">
-      <slot></slot>
+      <filter-bar-pop :filterTop="top" :show-dialog="isShow" :hasTabHeader="hasTabHeader" :menu="selectedMenu" @changeTab="handleChangeTab"
+        @changeMainItem="handleChangeMainItem" @changeSelect="changeSelect" @closeDialog="handleCloseDialog"></filter-bar-pop>
     </div>
   </div>
 </template>
@@ -18,104 +16,126 @@
 
   export default {
     props: {
-      topMenus: {
-        type: Array
-      }
+      barMenus: {
+        type: Array,
+        required: true,
+        validator: function (value) {
+          //TODO:验证数据有效性
+          return true;
+        }
+      },
+      top: String
     },
     data() {
       return {
         isShow: false,
-        isNav: true,
-        navs: [],
-        selectedIndex: undefined
+        hasTabHeader: false,
+        selectedMenu: {},
+        selectedIndexMenu: undefined
       }
     },
-    mounted(){
-      document.getElementById('list').style.top = document.getElementById('container').offsetHeight + document.getElementById('container').offsetTop + 'px';
-    },
     methods: {
-      handleShowDialog(v, i) {
+      handleShowDialog(menu, index) {
         this.isShow = true;
-        this.navs = v.navs;
-        this.selectedIndex = i;
-        this.$emit('selecteddialogmenu', {
-          v,
-          i
-        });
-        if (v.header == false) {
-          this.isNav = v.header;
+        this.selectedMenu = menu;
+        this.selectedIndexMenu = index;
+        if (menu.showTabHeader) {
+          this.hasTabHeader = true;
         } else {
-          this.isNav = true;
+          this.hasTabHeader = false;
         }
+        let _menu = JSON.parse(JSON.stringify(menu));
+        _menu.tabs = {};
+        this.$emit('showDialog', _menu);
       },
-      handleQuery(v) {
-        this.handleClose();
-        this.$emit('selecteditem', v);
+      handleChangeTab(tab) {
+        this.$emit('changeTab', tab.index);
       },
-      handleClickSideBar(v) {
-        this.$emit('selectedsidemenu', v);
+      handleChangeMainItem(mainItem) {
+        let _mainItem = JSON.parse(JSON.stringify(mainItem));
+        this.$emit('changeMainItem', _mainItem);
       },
-      handleCheckMenu(v) {
-        this.$emit('selectednav', v);
-      },
-      handleClose() {
+      handleCloseDialog() {
         this.isShow = false;
-        this.isNav = true;
+        this.selectedIndexMenu = -1;
+        this.$emit('closeDialog');
+      },
+      changeSelect() {
+        var selectData = [];
+        this.barMenus.forEach(function (barMenu, index, arr) {
+          let _selectBarData = {};
+          // console.log("barMenu.name: " + barMenu.name);
+
+          _selectBarData.name = barMenu.name;
+          _selectBarData.value = barMenu.value;
+          _selectBarData.tab = {};
+          let tab = barMenu.tabs[barMenu.selectIndex];
+          // console.log("tab.name: " + tab.name);
+          _selectBarData.tab.name = tab.name;
+          _selectBarData.tab.value = tab.value;
+          let mainItem = tab.detailList[tab.selectIndex];
+          _selectBarData.tab.mainItem = {}
+          // console.log("mainItem.name: " + mainItem.name);          
+          _selectBarData.tab.mainItem.name = mainItem.name;
+          _selectBarData.tab.mainItem.value = mainItem.vaule;
+          let subItem = false;
+          if (mainItem.list) {
+            subItem = mainItem.list[mainItem.selectIndex];
+            _selectBarData.tab.mainItem.subItem = {};
+            // console.log("subItem.name: " + subItem.name);                      
+            _selectBarData.tab.mainItem.subItem.name = subItem.name;
+            _selectBarData.tab.mainItem.subItem.value = subItem.value;
+          } else {
+            _selectBarData.tab.mainItem.subItem = subItem;
+          }
+          selectData.push(_selectBarData);
+        });
+        this.$emit('changeSelect', selectData);
       }
     },
     components: {
       'filter-bar-pop': FilterBarPop
     }
   }
-
 </script>
 <style lang="scss">
   .filterbar {
+    width: 100%;
+    background: #fff;
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    background: #fff;
-      .list{
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        max-height: 100vh;
-        overflow: auto;
-      }
-  }
-
-  .container {
-    width: 100%;
-    outline: 1px solid #DBDCDE;
-    position: relative;
-  }
-
-  .row {
-    display: flex;
-    display: -ms-flexbox;
-    display: -moz-box;
-    display: -webkit-box;
-    display: -webkit-flex;
-    flex-direction: row;
-    -webkit-flex-direction: row;
-    justify-content: space-between;
-    -webkit-box-pack: space-between;
-    -moz-box-pack: space-between;
-    -ms-flex-pack: space-between;
-    width: 90%;
-    height: 40px;
-    margin: 0 auto;
-    line-height: 40px;
-    .is-selected {
-      color: orange;
-    }
-    .col{
-      span{
-        margin-right: 5px;
+    right: 0;
+    .container {
+      width: 100%;
+      outline: 1px solid #DBDCDE;
+      position: relative;
+      .row {
+        display: flex;
+        display: -ms-flexbox;
+        display: -moz-box;
+        display: -webkit-box;
+        display: -webkit-flex;
+        flex-direction: row;
+        -webkit-flex-direction: row;
+        justify-content: space-around;
+        -webkit-box-pack: space-around;
+        -moz-box-pack: space-around;
+        -ms-flex-pack: space-around;
+        width: 90%;
+        height: 40px;
+        margin: 0 auto;
+        line-height: 40px;
+        .selected {
+          color: orange;
+        }
+        .col {
+          span {
+            margin-left: 5px;
+            vertical-align: middle;
+          }
+        }
       }
     }
   }
-
 </style>

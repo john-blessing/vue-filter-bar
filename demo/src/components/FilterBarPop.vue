@@ -1,19 +1,30 @@
 <template>
   <transition name="fade">
     <div class="filterbarpop-wrap" v-if="visible" :style="{'top': bgTop + 'px'}">
-      <div class="filterbarpop-bg" @click="handleClose" :style="{'top': bgTop + 'px'}"></div>
-      <div class="filterbarpop" :style="{'top': top + 'px'}">
-        <div class="nav-bar" v-show="isNav">
-          <a href="javascript:;" :style="{'flex': column}" role="button" @click="handleSelected(nav, index)" v-for="(nav, index) in navs"
-            :class="{'is-selected': isSelected == index}"><span :class="nav.icon"></span>{{nav.name}}</a>
+      <div class="filterbarpop-bg" @click="closeDialog" :style="{'top': bgTop + 'px'}"></div>
+      <div class="filterbarpop">
+        <div class="tab-bar" v-show="hasTabHeader">
+          <a href="javascript:;" :style="{'flex': column}" role="button" @click="clickTab(tab, index)" v-for="(tab, index) in menu.tabs"
+            :class="{'selected': selectIndexTab == index}"><span :class="tab.icon"></span>{{tab.name}}</a>
         </div>
         <div class="main">
-          <div class="main-sidebar" :class="{'full-line': !items}">
-            <div class="item" @click="handleClickSidebar(sidemenu, index)" v-for="(sidemenu, index) in sideMenus" :class="{'s-selected': sideSelected == index}">
-              <span :class="sidemenu.icon"></span>{{ sidemenu.name }}</div>
+          <div class="main-sidebar" :class="{'full-line': !items,'bg-style':items,'line-style':!items,}">
+            <div v-if="menu.type !== 'filter'" class="item" @click="clickSidebar(sidemenu, index)" v-for="(sidemenu, index) in sideMenus.detailList"
+              :class="{'selected': currentSelectIndex == index}">
+              <span :class="sidemenu.icon"></span>{{ sidemenu.name }}
+            </div>
+            <div v-if="menu.type == 'filter'" class="item" @click="clickSidebar(sidemenu, index)" v-for="(sidemenu, index) in sideMenus.detailList"
+              :class="{'selected': sidemenu.selectIndex == index}">
+              <span :class="sidemenu.icon"></span>{{ sidemenu.name }}<input type="checkbox" :checked="sidemenu.selectIndex == index"
+                class="checkbox" />
+            </div>
+            <div v-if="menu.type == 'filter'" class="filter-btns">
+              <a href="javascript:;" role="button" @click="handleClean">取消</a>
+              <a href="javascript:;" role="button" @click="handleEnsure">确认</a>
+            </div>
           </div>
-          <div class="main-list" v-if="items">
-            <span class="item" @click="handleClickItem(item, index)" v-for="(item, index) in items">{{item.name}}</span>
+          <div class="main-list line-style" v-if="items">
+            <span class="item" @click="clickItem(item, index)" v-for="(item, index) in items.list" :class="{'selected': currentSelectIndex == sideMenus.selectIndex && items.selectIndex == index}">{{item.name}}</span>
           </div>
         </div>
       </div>
@@ -24,112 +35,201 @@
 <script>
   export default {
     props: {
-      navs: {
-        type: Array
+      menu: {
+        type: Object
       },
       showDialog: {
         type: Boolean,
         default: true
       },
-      isNav: {
+      hasTabHeader: {
         type: Boolean,
         default: true
+      },
+      filterTop: {
+        type: String
       }
     },
     data() {
       return {
-        isSelected: 0,
-        sideSelected: 0,
-        sideMenus: [],
-        items: [],
+        selectIndexTab: 0,
+        currentSelectIndex: 0,
+        sideMenus: {},
+        items: {},
         column: '',
         visible: false,
-        randomNum: 0,
-        dataInfo: [],
-        top: 0,
-        bgTop: 0
+        top: 1,
+        bgTop: 0,
+        range: {}
       }
     },
     mounted() {
-      this.top = document.querySelector('.filterbar').offsetTop + 1;
-      this.bgTop = document.querySelector('.filterbar').offsetHeight;
+      //this.top = document.querySelector('.filterbar').offsetHeight + 1;
+      this.bgTop = document.querySelector('.filterbar').offsetHeight + this.filterTop / 1;
     },
     watch: {
       showDialog(v) {
         this.visible = v;
-      },
-      navs(v) {
         if (v) {
-          this.column = '0 0 ' + 100 / v.length + '%';
-          if (v[0].detailList) {
-            this.sideMenus = v[0].detailList;
-            if (this.sideMenus[0].list) {
-              this.items = this.sideMenus[0].list;
-            } else {
-              this.items = false;
-            }
-          }else {
-            this.handleClearList();
-          }
+          //初始化数据        
+          this.initData();
         }
+      },
+      menu(m) {
+        //根据tabs数量计算列宽
+        this.column = '0 0 ' + 100 / m.tabs.length + '%';
+        //初始化数据 
+        this.initData();
       }
     },
     methods: {
-      // 选择弹框顶部菜单
-      handleSelected(v, i) {
-        this.isSelected = i;
-
-        if (v.detailList) {
-          this.sideMenus = v.detailList;
-          this.items = this.sideMenus[i].list;
+      //初始化数据
+      initData(tabIndex) {
+        var tmpTabIndx = 0;
+        tabIndex === undefined ? tmpTabIndx = this.menu.selectIndex : tmpTabIndx = tabIndex
+        //判断tabindex的范围是否在数组内
+        if (tmpTabIndx >= 0 && tmpTabIndx < this.menu.tabs.length) {
+          this.selectIndexTab = tmpTabIndx;
         } else {
-          this.handleClearList();
+          this.selectIndexTab = 0;
         }
-
-        this.$emit('checkmenu', {
-          v,
-          i
-        })
+        //确认选中tab的一级列表
+        this.sideMenus = this.menu.tabs[this.selectIndexTab];
+        //如果当前选中tab是对应选中结果的tab
+        // debugger;
+        if (this.selectIndexTab == this.menu.selectIndex) {
+          this.currentSelectIndex = this.sideMenus.selectIndex;
+        }
+        // else{
+        //   this.sideMenus.selectIndex = -1;
+        //   this.currentSelectIndex = -1;
+        // }
+        //判断是否包含二级列表，包含则赋值
+        //如果一级列表的选中状态正确，则查询二级列表        
+        if (this.currentSelectIndex >= 0 && this.currentSelectIndex < this.sideMenus.detailList.length) {
+          //判断是否有二级列表
+          if (this.sideMenus.detailList[this.currentSelectIndex].list) {
+            this.items = this.sideMenus.detailList[this.currentSelectIndex];
+          } else {
+            //不显示二级列表
+            this.items = false;
+          }
+        } else { //如果一级列表选中状态不正确，按第一项的的数据判断
+          //判断是否有二级列表
+          if (this.sideMenus.detailList[0].list) {
+            //显示空的二级列表          
+            this.items = [];
+          } else {
+            //不显示二级列表
+            this.items = false;
+          }
+        }
       },
-      // 清除原有数据
-      handleClearList(){
-        this.sideMenus = [];
-        this.items = [];
+      //修改选项
+      changeSelect(index) {
+        //记录tabIndex
+        this.menu.selectIndex = this.selectIndexTab;
+        //记录一级列表选项
+        this.sideMenus.selectIndex = this.currentSelectIndex;
+        if (this.items) {
+          //确认二级列表选项
+          this.items.selectIndex = index;
+          //显示名称
+          this.menu.name = this.items.list[this.items.selectIndex].name;
+          this.menu.value = this.items.list[this.items.selectIndex].name;
+        } else {
+          //显示名称
+          this.menu.name = this.sideMenus.detailList[this.sideMenus.selectIndex].name;
+          this.menu.value = this.sideMenus.detailList[this.sideMenus.selectIndex].name;
+        }
+        this.$emit('changeSelect');
+        this.closeDialog();
+      },
+      // 帅选修改选项
+      changeRangeSelect() {
+        this.menu.name = '帅选';
+        var l = [];
+        for (var i in this.range) {
+          if (!(this.range[i] == '')) {
+            l.push(this.range[i]);
+          }
+        }
+        this.menu.value = l.length > 0 ? l : '全部';
+        this.$emit('changeSelect');
+        this.closeDialog();
+      },
+      // 选择Tab菜单
+      clickTab(tab, index) {
+        if (index !== this.selectIndexTab) {
+          //根据选中的tab初始化数据
+          this.initData(index);
+          this.$emit('changeTab', {
+            tab,
+            index
+          })
+        }
       },
       // 点击左侧列表
-      handleClickSidebar(v, i) {
-        this.sideSelected = i;
-        
-        if(this.items){
-          this.items = this.sideMenus[i].list;
+      clickSidebar(v, i) {
+        if (this.menu.type === 'filter') {
+          if (!this.range[i]) {
+            v.selectIndex = i;
+            this.range[i] = v.name;
+          } else {
+            this.range[i] = '';
+            v.selectIndex = -1;
+          }
         } else {
-          setTimeout(() => {
-            this.handleClose();
-          }, 200);
+          if (this.currentSelectIndex !== i) {
+            this.currentSelectIndex = i;
+            //存在二级列表
+            if (this.sideMenus.detailList[this.currentSelectIndex].list) {
+              this.items = this.sideMenus.detailList[this.currentSelectIndex];
+            } else {
+              //只有一级列表，记录选项，退出
+              this.changeSelect();
+            }
+            this.$emit('changeMainItem', {
+              v,
+              i
+            });
+          }
         }
-
-        this.$emit('clicksidebar', {
-          v,
-          i
-        })
       },
       // 点击右侧列表
-      handleClickItem(v, i) {
-        setTimeout(() => {
-          this.$emit('clickitem', {
-            v,
-            i
-          });
-        }, 200)
+      clickItem(v, i) {
+        //只有一级列表，记录选项，退出
+        this.changeSelect(i);
       },
       // 关闭弹框
-      handleClose() {
+      closeDialog() {
         this.visible = false;
-        this.$emit('close');
+        this.$emit('closeDialog');
+      },
+      // 提交已选内容
+      handleEnsure() {
+        this.changeRangeSelect();
+        this.$emit('changeMainItem', this.range);
+        // this.closeDialog();
+      },
+      // 清除已选内容
+      handleClean() {
+        this.menu.tabs[0].detailList.map(function (item) {
+          item.selectIndex = -1;
+        })
+        this.range = {};
       }
     }
   }
 
+  /**
+    TODOS:
+
+    1. 需要一个属性去辨别帅选项
+    2. 多选
+    3. 添加多选框
+  
+   */
 </script>
 
 <style lang="scss">
@@ -142,7 +242,7 @@
   .fade-leave-active {
     opacity: 0
   }
-  
+
   .filterbarpop-wrap {
     position: fixed;
     width: 100%;
@@ -150,7 +250,6 @@
     bottom: 0;
     left: 0;
     overflow: hidden;
-    z-index: 2017;
     max-height: 100%;
     .filterbarpop-bg {
       position: fixed;
@@ -158,13 +257,13 @@
       bottom: 0;
       left: 0;
       width: 100%;
-      max-height: 100%;
       background: rgba(0, 0, 0, .6);
     }
     .filterbarpop {
       position: absolute;
       width: 100%;
-      .nav-bar {
+      border-top: 1px solid #ccc;
+      .tab-bar {
         width: 100%;
         display: flex;
         display: -ms-flexbox;
@@ -179,7 +278,10 @@
         -moz-box-align: center;
         -ms-flex-align: center;
         height: 40px;
-
+        .selected {
+          border-bottom: 2px solid orange;
+          box-sizing: border-box;
+        }
         a {
           background: #fff;
           height: 100%;
@@ -187,10 +289,6 @@
           text-decoration: none;
           color: #323232;
           text-align: center;
-          span{
-            margin-right: 5px;
-            display: inline-block;
-          }
         }
       }
       .main {
@@ -200,27 +298,40 @@
         -webkit-flex-direction: row;
         height: 250px;
         background: #fff;
-        border-top: 1px solid #f5f5f5;
         .main-sidebar {
           flex: 0 0 50%;
           overflow: auto;
           width: 100%;
-          div {
-            background: #f5f5f5;
-          }
         }
         .full-line {
           flex: 0 0 100%;
           div {
-            text-align: left;
-            padding-left: 1.5em;
+            text-align: left; // text-indent: 1.5em;
           }
-          .item{
-            span{
-              position: relative;
-              top: 0;
-              left: 0;
-              margin-right: 15px;
+        }
+        .filter-btns {
+          display: flex;
+          display: -webkit-flex;
+          flex-direction: row;
+          -webkit-flex-direction: row;
+          justify-content: space-around;
+          -webkit-box-pack: space-around;
+          -moz-box-pack: space-around;
+          -ms-flex-pack: space-around;
+          position: absolute;
+          bottom: 0;
+          width: 100%;
+          line-height: 40px;
+          a {
+            display: block;
+            width: 100%;
+            text-align: center;
+            text-decoration: none;
+            color: #ccc;
+            border-top: 1px solid #ccc;
+            &:last-child {
+              background: #39f;
+              color: #fff;
             }
           }
         }
@@ -231,6 +342,35 @@
             background: #f5f5f5;
           }
         }
+        .line-style {
+          .item {
+            text-align: left;
+            margin-left: 10px;
+            padding-left: 15px;
+            border-bottom: 1px solid #ccc;
+            position: relative;
+            &.selected {
+              color: orange;
+              border-color: orange;
+              span {
+                color: orange;
+              }
+            }
+            .checkbox {
+              position: absolute;
+              right: 50px;
+              top: 10px;
+            }
+          }
+        }
+        .bg-style {
+          .item {
+            background-color: #f5f5f5;
+            &.selected {
+              background-color: #FFF;
+            }
+          }
+        }
         .item {
           display: inline-block;
           height: 40px;
@@ -239,27 +379,17 @@
           width: 100%;
           text-decoration: none;
           color: #444;
-          text-align: center;
-          position: relative;
+          span {
+            font-size: 14px;
+            color: #888;
+            margin-right: 10px;
+            vertical-align: middle;
+          }
           &:active {
             color: #fff;
-          }
-          span{
-            margin-right: 5px;
-            position: absolute;
-            left: 15px;
-            top: 12px;
           }
         }
       }
     }
-    .is-selected {
-      border-bottom: 2px solid orange;
-      box-sizing: border-box;
-    }
-    .s-selected {
-      background: #fff !important;
-    }
   }
-
 </style>
