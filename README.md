@@ -8,8 +8,6 @@ vue编写的移动端帅选条。
 
 ## Use Setup
 
-* * *
-
 ### Install vue-filter-bar
 
     npm i vue-filter-bar --save
