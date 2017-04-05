@@ -10,7 +10,7 @@ vue编写的移动端帅选条。
 
 * * *
 
-#### Install vue-filter-bar
+### Install vue-filter-bar
 
     npm i vue-filter-bar --save
 
