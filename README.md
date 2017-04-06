@@ -4,10 +4,7 @@ vue编写的移动端帅选条。
 
 ## Example
 
-![Alt text](/demo/static/filterbar.jpeg)
-![Alt text](/demo/static/filterbar1.jpeg)
-![Alt text](/demo/static/filterbar2.jpeg)
-![Alt text](/demo/static/filterbar3.jpeg)
+![Alt text](/demo/static/filterbar.gif)
 
 ## Use Setup
 
