@@ -155,7 +155,7 @@ export default [{
         }]
     }]
 }, {
-    name: '帅选',
+    name: '筛选',
     icon: '',
     value: 'filter',
     type: 'filter',

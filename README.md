@@ -6,6 +6,12 @@ vue编写的移动端帅选条。
 
 ![Alt text](/demo/static/filterbar.gif)
 
+## More Example
+
+   * cd demo
+   * npm i
+   * npm run dev
+
 ## Use Setup
 
 ### Install vue-filter-bar
@@ -82,11 +88,11 @@ vue编写的移动端帅选条。
    * name(String, default: ''): 按钮名称
    * icon(String, default: ''): 按钮icon (弃用)
    * value(String, default: ''): 按钮的值
-   * type(String, default: ''): 区分帅选按钮
+   * type(String, default: ''): 区分筛选按钮，当type='filter'时会变成帅选列表可以实现单选、多选功能。
    * showTabHeader(Boolean, default: true): 显示弹框一级目录
    * defaultIcon(String, default: ''): 按钮默认icon
    * selectIcon(String, default: ''): 按钮被选中icon
-   * selectIndex(Number, default: 0): index
+   * selectIndex(Number, default: 0): 序号
 
 
 ![Alt text](/demo/static/data2.jpeg)
@@ -96,7 +102,7 @@ vue编写的移动端帅选条。
 
    * icon(String, default: ''): 按钮icon
    * name(String, default: ''): 列表项名称
-   * selectIndex(Number, default: 0): index
+   * selectIndex(Number, default: 0): 序号
    * detailList(Array, default:[]): 二级目录列表左侧
 
 ![Alt text](/demo/static/data3.jpeg)
@@ -105,6 +111,7 @@ vue编写的移动端帅选条。
 
   * list(Array, default: []): 二级目录列表右侧
   * name(String, default: ''): 列表项名称
+
 ## API
 
    * bar-menus(Array, default: []): 按钮相关数据的入口。
@@ -113,5 +120,8 @@ vue编写的移动端帅选条。
    * changeTab(Function, return: Object): 切换弹框一级目录时调用。
    * changeMainItem(Function, return: Object): 选择二级目录左侧列表时调用。
    * changeSelect(Function, return: Array): 返回最终结果
+
+## Dodo
+
 
 ## Issues

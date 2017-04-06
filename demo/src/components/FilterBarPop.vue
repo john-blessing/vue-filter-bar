@@ -147,7 +147,7 @@
       },
       // 帅选修改选项
       changeRangeSelect() {
-        this.menu.name = '帅选';
+        this.menu.name = '筛选';
         var l = [];
         for (var i in this.range) {
           if (!(this.range[i] == '')) {
