@@ -226,9 +226,11 @@
       },
       // 清除已选内容
       handleClean() {
-        this.menu.tabs[0].detailList.map(function (item) {
-          item.selectIndex = -1;
-        })
+        this.menu.tabs.map(item => {
+          item.detailList.map(_item => {
+            _item.selectIndex = -1;
+          })
+        });
         this.range = {};
       }
     }

@@ -82,6 +82,10 @@
         }
       </script>
 
+## Data Structure
+
+  [data.js](/demo/src/data.js)
+
 ## Data Params
 
    * name(String, default: ''): 按钮名称
