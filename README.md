@@ -30,9 +30,11 @@ vue编写的移动端帅选条。
         <filter-bar 
           top="40" 
           :bar-menus="barMenus" 
-          @showDialog="handleShowDialog" @closeDialog="handleCloseDialog" 
+          @showDialog="handleShowDialog" 
+          @closeDialog="handleCloseDialog" 
           @changeTab="handleChangeTab"
-          @changeMainItem="handleChangeMainItem" @changeSelect="changeData">
+          @changeMainItem="handleChangeMainItem" 
+          @changeSelect="changeData">
         </filter-bar>
       </div>
     </template>
