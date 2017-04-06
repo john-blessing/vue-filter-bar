@@ -87,7 +87,8 @@
   [data.js](/demo/src/data.js)
 
 ## Data Params
-
+   
+   * top(Number, default: 0): 筛选条离顶部的距离
    * name(String, default: ''): 按钮名称
    * icon(String, default: ''): 按钮icon (弃用)
    * value(String, default: ''): 按钮的值

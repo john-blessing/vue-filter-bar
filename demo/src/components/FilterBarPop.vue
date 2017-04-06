@@ -67,7 +67,6 @@
       }
     },
     mounted() {
-      //this.top = document.querySelector('.filterbar').offsetHeight + 1;
       this.bgTop = document.querySelector('.filterbar').offsetHeight + this.filterTop / 1;
     },
     watch: {
@@ -358,9 +357,11 @@
           -moz-box-pack: space-around;
           -ms-flex-pack: space-around;
           position: absolute;
-          bottom: 0;
+          bottom: -40px;
           width: 100%;
           line-height: 40px;
+          z-index: 100;
+          background: #fff;
           a {
             display: block;
             width: 100%;
