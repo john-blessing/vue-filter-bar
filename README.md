@@ -1,6 +1,10 @@
 ## vue-filter-bar
 
-vue编写的移动端帅选条。
+  vue编写的移动端筛选条组件。
+
+## Introduction
+
+  利用vue开发的移动端筛选条组件，方便在移动端进行多条件下搜索，提高用户的体验度，高速提取用户所要浏览的搜索条件，以便提供更精确的用户浏览内容。在使用过程中，希望开发者给予更多的建议和批评，使之更加完善，提供更好的服务。
 
 ## Example
 
@@ -78,39 +82,18 @@ vue编写的移动端帅选条。
         }
       </script>
 
-
-## Data Structure
-
-![Alt text](/demo/static/data1.jpeg)
-
-### Detail Params
+## Data Params
 
    * name(String, default: ''): 按钮名称
    * icon(String, default: ''): 按钮icon (弃用)
    * value(String, default: ''): 按钮的值
-   * type(String, default: ''): 区分筛选按钮，当type='filter'时会变成帅选列表可以实现单选、多选功能。
-   * showTabHeader(Boolean, default: true): 显示弹框一级目录
+   * type(String, default: ''): 区分筛选按钮，当type='filter'时，列表为筛选模式。
+   * showTabHeader(Boolean, default: true): 显示弹框一级目录， 当type='filter'时，其值为false。
    * defaultIcon(String, default: ''): 按钮默认icon
    * selectIcon(String, default: ''): 按钮被选中icon
-   * selectIndex(Number, default: 0): 序号
-
-
-![Alt text](/demo/static/data2.jpeg)
-
-
-### Detail Params
-
-   * icon(String, default: ''): 按钮icon
-   * name(String, default: ''): 列表项名称
-   * selectIndex(Number, default: 0): 序号
+   * selectIndex(Number, default: 0): 序号，当type='filter'时，其值为false。
    * detailList(Array, default:[]): 二级目录列表左侧
-
-![Alt text](/demo/static/data3.jpeg)
-
-### Detail Params
-
-  * list(Array, default: []): 二级目录列表右侧
-  * name(String, default: ''): 列表项名称
+   * list(Array, default: []): 二级目录列表右侧
 
 ## API
 
@@ -121,7 +104,7 @@ vue编写的移动端帅选条。
    * changeMainItem(Function, return: Object): 选择二级目录左侧列表时调用。
    * changeSelect(Function, return: Array): 返回最终结果
 
-## Dodo
+## Dodos
 
 
 ## Issues

@@ -13,10 +13,13 @@
               :class="{'selected': currentSelectIndex == index}">
               <span :class="sidemenu.icon"></span>{{ sidemenu.name }}
             </div>
-            <div v-if="menu.type == 'filter'" class="item" @click="clickSidebar(sidemenu, index)" v-for="(sidemenu, index) in sideMenus.detailList"
-              :class="{'selected': sidemenu.selectIndex == index}">
-              <span :class="sidemenu.icon"></span>{{ sidemenu.name }}<input type="checkbox" :checked="sidemenu.selectIndex == index"
-                class="checkbox" />
+            <div v-if="menu.type == 'filter'" v-for="(sm, _index) in menu.tabs">
+              <div class="filter-name">{{sm.name}}</div>
+              <div class="filter-item">
+                <span v-for="(sidemenu, index) in sm.detailList" class="item-operation" @click="clickFilterbar(sm, _index, index)" :class="{'multi-selected': sidemenu.selectIndex == index}">
+                {{ sidemenu.name }}
+                </span>
+              </div>
             </div>
             <div v-if="menu.type == 'filter'" class="filter-btns">
               <a href="javascript:;" role="button" @click="handleClean">取消</a>
@@ -136,11 +139,11 @@
           this.items.selectIndex = index;
           //显示名称
           this.menu.name = this.items.list[this.items.selectIndex].name;
-          this.menu.value = this.items.list[this.items.selectIndex].name;
+          this.menu.value = this.items.list[this.items.selectIndex].value;
         } else {
           //显示名称
           this.menu.name = this.sideMenus.detailList[this.sideMenus.selectIndex].name;
-          this.menu.value = this.sideMenus.detailList[this.sideMenus.selectIndex].name;
+          this.menu.value = this.sideMenus.detailList[this.sideMenus.selectIndex].value;
         }
         this.$emit('changeSelect');
         this.closeDialog();
@@ -148,9 +151,13 @@
       // 帅选修改选项
       changeRangeSelect() {
         this.menu.name = '筛选';
-        var l = [];
+        var l = [], _l = [];
         for (var i in this.range) {
           if (!(this.range[i] == '')) {
+            for(var _i in this.range[i].value){
+              _l.push(this.range[i].value[_i]);
+            }
+            this.range[i].value = _l;
             l.push(this.range[i]);
           }
         }
@@ -169,31 +176,36 @@
           })
         }
       },
+      // 筛选方法
+      clickFilterbar(v, I, i) {
+        v.detailList[i].selectIndex = i;
+        if(!this.range[I]){
+          this.range[I] = {name: v.name, value: {}};
+          this.range[I].value[i] = v.detailList[i].value;
+        } else {
+          if(!this.range[I].value[i]){
+            this.range[I].value[i] = v.detailList[i].value;
+          } else {
+            this.range[I].value[i] = '';
+            v.detailList[i].selectIndex = -1;
+          }
+        }
+      },
       // 点击左侧列表
       clickSidebar(v, i) {
-        if (this.menu.type === 'filter') {
-          if (!this.range[i]) {
-            v.selectIndex = i;
-            this.range[i] = v.name;
+        if (this.currentSelectIndex !== i) {
+          this.currentSelectIndex = i;
+          //存在二级列表
+          if (this.sideMenus.detailList[this.currentSelectIndex].list) {
+            this.items = this.sideMenus.detailList[this.currentSelectIndex];
           } else {
-            this.range[i] = '';
-            v.selectIndex = -1;
+            //只有一级列表，记录选项，退出
+            this.changeSelect();
           }
-        } else {
-          if (this.currentSelectIndex !== i) {
-            this.currentSelectIndex = i;
-            //存在二级列表
-            if (this.sideMenus.detailList[this.currentSelectIndex].list) {
-              this.items = this.sideMenus.detailList[this.currentSelectIndex];
-            } else {
-              //只有一级列表，记录选项，退出
-              this.changeSelect();
-            }
-            this.$emit('changeMainItem', {
-              v,
-              i
-            });
-          }
+          this.$emit('changeMainItem', {
+            v,
+            i
+          });
         }
       },
       // 点击右侧列表
@@ -308,6 +320,31 @@
           div {
             text-align: left; // text-indent: 1.5em;
           }
+        }
+        .item-operation {
+          display: inline-block;
+          padding: 10px 4px 10px 4px;
+          border: 1px solid rgb(91, 149, 255);
+          border-radius: 3px;
+          height: 0;
+          line-height: 1px;
+        }
+        .multi-selected {
+          background: rgb(91, 149, 255);
+          color: #fff !important;
+        }
+        .filter-item {
+          border-top: 1px solid #ccc;
+          border-bottom: 1px solid #ccc;
+          padding: 13px 0 5px 10px;
+
+          span {
+            margin-right: 8px;
+            margin-bottom: 8px;
+          }
+        }
+        .filter-name {
+          padding: 10px 0 10px 10px;
         }
         .filter-btns {
           display: flex;
