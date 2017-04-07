@@ -150,17 +150,14 @@
       // 帅选修改选项
       changeRangeSelect() {
         this.menu.name = '筛选';
-        var l = [], _l = [];
-        for (var i in this.range) {
-          if (!(this.range[i] == '')) {
-            for(var _i in this.range[i].value){
-              _l.push(this.range[i].value[_i]);
-            }
-            this.range[i].value = _l;
-            l.push(this.range[i]);
+
+        for(var i in this.range){
+          if(Object.keys(this.range[i].value).length == 0){
+            delete this.range[i]
           }
         }
-        this.menu.value = l.length > 0 ? l : '全部';
+        
+        this.menu.value = Object.keys(this.range).length > 0 ? this.range : '';
         this.$emit('changeSelect');
         this.closeDialog();
       },
@@ -178,6 +175,7 @@
       // 筛选方法
       clickFilterbar(v, I, i) {
         v.detailList[i].selectIndex = i;
+        // debugger
         if(!this.range[I]){
           this.range[I] = {name: v.name, value: {}};
           this.range[I].value[i] = v.detailList[i].value;
@@ -185,7 +183,7 @@
           if(!this.range[I].value[i]){
             this.range[I].value[i] = v.detailList[i].value;
           } else {
-            this.range[I].value[i] = '';
+            delete this.range[I].value[i];
             v.detailList[i].selectIndex = -1;
           }
         }

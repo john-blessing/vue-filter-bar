@@ -107,7 +107,7 @@
    * closeDialog(Function, return: Object): 弹框消失时调用。
    * changeTab(Function, return: Object): 切换弹框一级目录时调用。
    * changeMainItem(Function, return: Object): 选择二级目录左侧列表时调用。
-   * changeSelect(Function, return: Array): 返回最终结果
+   * changeSelect(Function, return: Array): 返回最终结果。(注：筛选结果的value返回json对象)
 
 ## Dodos
 
