@@ -88,17 +88,17 @@
 
 ## Data Params
    
-   * top(Number, default: 0): 筛选条离顶部的距离
-   * name(String, default: ''): 按钮名称
-   * icon(String, default: ''): 按钮icon (弃用)
-   * value(String, default: ''): 按钮的值
+   * top(Number, default: 0): 筛选条离顶部的距离。
+   * name(String, default: ''): 按钮名称。
+   * icon(String, default: ''): 按钮icon (弃用)。
+   * value(String, default: ''): 按钮的值。
    * type(String, default: ''): 区分筛选按钮，当type='filter'时，列表为筛选模式。
    * showTabHeader(Boolean, default: true): 显示弹框一级目录， 当type='filter'时，其值为false。
-   * defaultIcon(String, default: ''): 按钮默认icon
-   * selectIcon(String, default: ''): 按钮被选中icon
-   * selectIndex(Number, default: 0): 序号，当type='filter'时，其值为false。
-   * detailList(Array, default:[]): 二级目录列表左侧
-   * list(Array, default: []): 二级目录列表右侧
+   * defaultIcon(String, default: ''): 按钮默认icon。
+   * selectIcon(String, default: ''): 按钮被选中icon。
+   * selectIndex(Number, default: 0): 序号，当type='filter'时，其值为-1。
+   * detailList(Array, default:[]): 二级目录列表左侧。
+   * list(Array, default: []): 二级目录列表右侧。
 
 ## API
 
