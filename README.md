@@ -8,7 +8,7 @@
 
 ## Example
 
-![Alt text](/demo/static/filterbar.gif)
+![Alt text](/demo/static/filterbar1.gif)
 
 ## More Example
 
