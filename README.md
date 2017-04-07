@@ -10,7 +10,7 @@
 
 ![Alt text](/demo/static/filterbar1.gif)
 
-## More Example
+### More Example
 
    * cd demo
    * npm i
