@@ -121,7 +121,8 @@ export default [{
             value: '全部',
             selectIndex: 0,
             list: [{
-                name: "全部"
+                name: "全部",
+                value: 'all'
             }]
         }, {
             name: '中餐馆',
@@ -129,11 +130,14 @@ export default [{
             value: '中餐馆',
             selectIndex: 1,
             list: [{
-                name: '全部'
+                name: '全部',
+                value: 'all'
             }, {
-                name: '火锅'
+                name: '火锅',
+                value: 'hot pot'
             }, {
-                name: '川菜'
+                name: '川菜',
+                value: 'Sichuan cuisine'
             }]
         }, {
             name: '西餐馆',
@@ -141,11 +145,14 @@ export default [{
             value: '西餐管',
             selectIndex: 2,
             list: [{
-                name: '全部'
+                name: '全部',
+                value: 'all'
             }, {
-                name: '披萨'
+                name: '披萨',
+                value: 'pizza'
             }, {
-                name: '牛排'
+                name: '牛排',
+                value: 'steak'
             }]
         }]
     }]
