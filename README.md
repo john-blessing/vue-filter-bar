@@ -114,9 +114,11 @@
 
 ## Issues
 
+1. 筛选返回数据类型
   
-1. 筛选条件返回的数据是json对象，及下图中：
+筛选条件返回的数据是json对象，及下图中：
 
 ![Alt text](/demo/static/value.png)
 
 价格对应的value值是对象类型，需使用for in循环去获取数据。
+ 
