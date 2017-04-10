@@ -97,8 +97,8 @@
    * defaultIcon(String, default: ''): 按钮默认icon。
    * selectIcon(String, default: ''): 按钮被选中icon。
    * selectIndex(Number, default: 0): 序号，当type='filter'时，其值为-1。
-   * detailList(Array, default:[]): 二级目录列表左侧。
-   * list(Array, default: []): 二级目录列表右侧。
+   * detailList(Array, default:[]): 二级目录左侧列表数据。
+   * list(Array, default: []): 二级目录右侧列表数据。
 
 ## API
 
@@ -113,3 +113,9 @@
 
 
 ## Issues
+
+筛选条件返回的数据是json对象，及下图中：
+
+![Alt text](/demo/static/value.png)
+
+价格对应的value值是对象类型，需使用for in循环去获取数据。
