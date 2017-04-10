@@ -114,7 +114,8 @@
 
 ## Issues
 
-筛选条件返回的数据是json对象，及下图中：
+  
+1. 筛选条件返回的数据是json对象，及下图中：
 
 ![Alt text](/demo/static/value.png)
 
